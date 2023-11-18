@@ -6,6 +6,7 @@ import "./interfaces/IAgent.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract PBTResolverFactory is Ownable {
+    // address of poweragent
     IAgent public agent;
 
     mapping(bytes32 => address) public PBTResolverJobOwners;
@@ -16,6 +17,16 @@ contract PBTResolverFactory is Ownable {
         agent = IAgent(_agent);
     }
 
+    // deploy a new PBTResolver and register it to the agent
+    // @param _targetPool: the target univ3 pool address
+    // @param _token1: the token1 address of the target pool
+    // @param _token2: the token2 address of the target pool
+    // @param _buyThreshold: the price in which you use token1 to purchase token 2
+    // @param _sellThreshold: the price in which you use token2 to purchase token 1
+    // @param _slippageTolerance: the slippage tolerance for the swap
+    // @param _buyClipSize: the amount of token1 you want to use to buy token2
+    // @param _sellClipSize: the amount of token2 you want to use to buy token1
+    // @param _swapRouter: the swapRouter address
     function deployPBTResolver(
         address _targetPool,
         address _token1,
@@ -42,19 +53,11 @@ contract PBTResolverFactory is Ownable {
         resolver.transferOwnership(msg.sender);
 
         IAgent.RegisterJobParams memory registerJobParams = IAgent.RegisterJobParams(
-            address(resolver),
-            resolver.swapExactInputSingle.selector,
-            true,
-            true,
-            50,
-            0,
-            1000,
-            1000 ether,
-            2,
-            0
+            address(resolver), resolver.swapExactInputSingle.selector, true, true, 50, 0, 1000, 1000 ether, 2, 0
         );
 
-        IAgent.Resolver memory resolverParams = IAgent.Resolver(address(resolver), abi.encodeWithSelector(resolver.resolve.selector));
+        IAgent.Resolver memory resolverParams =
+            IAgent.Resolver(address(resolver), abi.encodeWithSelector(resolver.resolve.selector));
 
         (bytes32 jobKey,) = agent.registerJob(registerJobParams, resolverParams, "");
 
