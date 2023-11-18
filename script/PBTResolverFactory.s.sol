@@ -1,9 +1,9 @@
 import "forge-std/Script.sol";
 import "../src/PBTResolverFactory.sol";
 
-contract PBTResolverFactoryScript {
-    function run() {
-        address agent = "0x071412e301c2087a4daa055cf4afa2683ce1e499";
+contract PBTResolverFactoryScript is Script {
+    function run() public {
+        address agent = 0x071412e301C2087A4DAA055CF4aFa2683cE1e499;
 
         vm.startBroadcast(msg.sender);
 

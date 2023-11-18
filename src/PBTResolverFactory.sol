@@ -66,9 +66,9 @@ contract PBTResolverFactory is Ownable {
         // initiate the job transfer
         agent.initiateJobTransfer(jobKey, msg.sender);
 
-        // delegateCall from msg.sender to accept the jobTransfers
-        (bool success, bytes memory data) =
-            address(agent).delegatecall(abi.encodeWithSignature("acceptJobTransfer(bytes32)", jobKey));
+        // @NOTE must call "acceptJobTransfer" on the agent
+        // "0x071412e301c2087a4daa055cf4afa2683ce1e499" on gnosis
+        // from the telegram bot user to initialize the job
 
         emit PBTResolverDeployed(address(resolver), msg.sender, jobKey);
     }
