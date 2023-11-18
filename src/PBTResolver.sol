@@ -112,7 +112,7 @@ contract PBTResolver is Ownable {
             params = ISwapRouter.ExactInputSingleParams({
                 tokenIn: token1,
                 tokenOut: token2,
-                fee: 0,
+                fee: 3000,
                 recipient: owner,
                 deadline: block.timestamp,
                 amountIn: buyClipSize,
@@ -127,7 +127,7 @@ contract PBTResolver is Ownable {
             params = ISwapRouter.ExactInputSingleParams({
                 tokenIn: token2,
                 tokenOut: token1,
-                fee: 0,
+                fee: 3000,
                 recipient: owner,
                 deadline: block.timestamp,
                 amountIn: sellClipSize,
