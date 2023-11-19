@@ -37,7 +37,7 @@ contract PBTResolverFactory is Ownable {
         uint256 _buyClipSize,
         uint256 _sellClipSize,
         address _swapRouter
-    ) public {
+    ) public returns (bytes32 jobKey){
         PBTResolver resolver = new PBTResolver(
             _targetPool,
             _token1,
@@ -59,7 +59,7 @@ contract PBTResolverFactory is Ownable {
         IAgent.Resolver memory resolverParams =
             IAgent.Resolver(address(resolver), abi.encodeWithSelector(resolver.resolve.selector));
 
-        (bytes32 jobKey,) = agent.registerJob(registerJobParams, resolverParams, "");
+        (jobKey,) = agent.registerJob(registerJobParams, resolverParams, "");
 
         PBTResolverJobOwners[jobKey] = msg.sender;
 
